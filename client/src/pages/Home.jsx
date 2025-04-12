@@ -6,7 +6,7 @@ function Home({ logout }) {
   const [tasks, setTasks] = useState([]);
 
   const fetchTasks = async () => {
-    const res = await fetch('http://localhost:5000/api/tasks');
+    const res = await fetch('https://task-manager-1-m5a0.onrender.com/api/tasks');
     const data = await res.json();
     setTasks(data);
   };

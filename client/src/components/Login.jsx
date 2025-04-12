@@ -10,7 +10,7 @@ function Login({ login }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://task-manager-1-m5a0.onrender.com'}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

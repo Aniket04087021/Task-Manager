@@ -3,12 +3,12 @@ import { FaCheck, FaTrash } from 'react-icons/fa';
 
 function TaskItem({ task, onUpdate }) {
   const completeTask = async () => {
-    await fetch(`http://localhost:5000/api/tasks/${task.id}`, { method: 'PUT' });
+    await fetch(`https://task-manager-1-m5a0.onrender.com/api/tasks/${task.id}`, { method: 'PUT' });
     onUpdate();
   };
 
   const deleteTask = async () => {
-    await fetch(`http://localhost:5000/api/tasks/${task.id}`, { method: 'DELETE' });
+    await fetch(`https://task-manager-1-m5a0.onrender.com/api/tasks/${task.id}`, { method: 'DELETE' });
     onUpdate();
   };
 

@@ -7,7 +7,7 @@ function AddTask({ onAdd }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim()) return;
-    await fetch('http://localhost:5000/api/tasks', {
+    await fetch('https://task-manager-1-m5a0.onrender.com/api/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
