@@ -5,25 +5,36 @@ import { FaSignInAlt } from 'react-icons/fa';
 function Login({ login }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    // Form validation
+    if (!username.trim() || !password.trim()) {
+      setError('Username and password are required');
+      return;
+    }
+
     try {
       const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://task-manager-1-m5a0.onrender.com'}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
+
       const data = await res.json();
-      if (data.success) {
+      
+      if (data.success && data.token) {
         login(data.token);
         navigate('/');
       } else {
-        alert(data.message || 'Invalid credentials');
+        setError(data.message || 'Invalid credentials');
       }
     } catch (error) {
-      alert('Error logging in. Please try again.');
+      setError('Error logging in. Please try again.');
     }
   };
 
@@ -31,6 +42,7 @@ function Login({ login }) {
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.title}>Welcome Back</h2>
+        {error && <div style={styles.error}>{error}</div>}
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
             <input 
@@ -156,6 +168,15 @@ const styles = {
   icon: {
     fontSize: '1rem',
   },
+  error: {
+    color: '#ff4444',
+    textAlign: 'center',
+    marginBottom: '1rem',
+    padding: '0.5rem',
+    backgroundColor: '#ffebee',
+    borderRadius: '4px',
+    fontSize: '0.9rem'
+  }
 };
 
 export default Login;
