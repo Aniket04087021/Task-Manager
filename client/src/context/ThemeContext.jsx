@@ -1,27 +1,29 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  // Check local storage or use system preference as default
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    console.log('Initial theme:', { savedTheme, prefersDark });
-    return savedTheme ? savedTheme === 'dark' : prefersDark;
+    return savedTheme === 'dark' || 
+      (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
 
+  // Update the theme when state changes
   useEffect(() => {
-    console.log('Theme changed:', isDarkMode);
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
+  // Toggle function
   const toggleTheme = () => {
-    console.log('Toggling theme');
     setIsDarkMode(prev => !prev);
   };
 
@@ -32,10 +34,11 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
+// Custom hook for using the theme context
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-}; 
+};
