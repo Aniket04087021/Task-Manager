@@ -18,6 +18,12 @@ function App() {
   };
 
   return (
+
+<Routes>
+      <Route path="/" element={token ? <Home logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/login" element={<LoginPage login={login} />} />
+      <Route path="/signup" element={<SignupPage login={login} />} />
+    </Routes>
     
   );
 }
